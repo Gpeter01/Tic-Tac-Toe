@@ -1,0 +1,166 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    line-height: 1.5;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+:root {
+    --default-bg: rgba(60, 74, 48, 0.3);
+}
+
+body {
+    background-color: var(--default-bg);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 6.25vw;
+    border-bottom: 1px solid transparent;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 3rem;
+    letter-spacing: 0.2rem;
+    font-weight: 700;
+    font-family: fantasy, serif, sans-serif;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    font-size: 1.005rem;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+main {
+    width: 100%;
+    height: fit-content;
+}
+.game-grid {
+    display: grid;
+    width: 25vw;
+    height: 25vw;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    margin: 0 auto;
+    gap: 2px;
+    background: white;
+    margin-top: 5rem;
+    border: none;
+}
+.grid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    font-weight: 600;
+    background: var(--default-bg);
+    padding: 0.5rem;
+    font-family: cursive, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+dialog {
+    display: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    padding: 1.5rem;
+    margin: auto;
+    border-radius: 1rem;
+    background-color: rgba(60, 74, 48, 0.75);
+    color: white;
+}
+
+dialog::backdrop {
+    background: rgba(25, 20, 17, 0.3);
+    backdrop-filter: blur(3px);
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.note {
+    font-size: 1.2rem;
+    margin: 0.2rem 0;
+}
+
+label {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+input {
+    font-size: 1.1rem;
+    display: block;
+    margin-top: 3px;
+    width: 50%;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid black;
+    padding: 8px;
+}
+
+.error {
+    text-align: center;
+    font-weight: 600;
+    color: rgba(255, 0, 0);
+}
+
+dialog button {
+    margin: 1rem auto 0;
+}
+
+button.yes {
+    background-color: rgba(0, 255, 0, 0.85);
+}
+
+button.no {
+    background-color: rgba(255, 0, 0, 0.85);
+}
+
+.turn {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 2.5rem;
+    color: navy;
+    text-transform: uppercase;
+    font-family: monospace, serif, sans-serif, monospace, 'Times New Roman', Times;
+    letter-spacing: 0.05rem;
+}
+.question, .win, .draw {
+    text-align: center;
+    font-size: 2rem;
+}
+button.yes, button.no {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+.win {
+    text-transform: uppercase;
+}
