@@ -15,7 +15,6 @@ const game = (() => {
 
     // GAME FUNCTIONS
     const getGameValues = () => {return gameValues};
-    const getGameBoard = () => {return gameBoard};
     const getThisTurn = () => {return gameTurn};
     const incrementTurn = () => {gameTurn++};
     
@@ -140,6 +139,11 @@ const game = (() => {
             }
     }
 
+    const checkAvailability = (row, column) => {
+        if (typeof gameBoard[row][column] === 'string') {
+            return 'occupied';
+        }
+    }
     const alterGameBoard = (row, column) => {
         if (winCount !== 0) {
             return true;
@@ -147,10 +151,10 @@ const game = (() => {
         if (drawCount !== 0) {
             return true;
         }
-        if (typeof gameBoard[row][column] === 'string') {
-            return true;
+        if (checkAvailability(row, column) === 'occupied') {
+            return false;
         }
-        if (gameTurn % 2 == 0) {
+        if (gameTurn % 2 === 0) {
             gameBoard[row][column] = gameValues[1];
             if (checkWin()) {
                 return true;
@@ -174,12 +178,13 @@ const game = (() => {
         winCount = 0;
         drawCount = 0;
         gameTurn = 1;
+    // THERE IS A REASON FOR THIS PARTICULAR ARRAY STRUCTURE, UNDERSTAND THE CHECKWIN() AND ALTERGAMEBOARD() CODE PROPERLY
         gameBoard = [[1, 1, 2], 
                      [2, 2, 1], 
                      [1, 2, 1]];
         return;
     }
-    return {getGameBoard, alterGameBoard, getGameValues, getThisTurn, incrementTurn, newGame, setPlayer, displayTurn};
+    return {alterGameBoard, getGameValues, getThisTurn, incrementTurn, newGame, setPlayer, displayTurn, checkAvailability};
 })();
 
 function checkAccurately(element) {
@@ -225,95 +230,109 @@ function getGameInput(event) {
         return game.getGameValues()[0];
     }
 
+    function initiateClickSequence(target, callback) {
+        addTextContent(target, callback);
+        game.incrementTurn();
+        game.displayTurn();
+    }
+
     if (event.target.classList[1] === 'one') {
+        if (game.checkAvailability(0, 0) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(0, 0)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'two') {
+        if (game.checkAvailability(0, 1) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(0, 1)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
-        return;
-
+        initiateClickSequence(event.target, findCurrentPlayer());
+        return;    
     }
     if (event.target.classList[1] === 'three') {
+        if (game.checkAvailability(0, 2) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(0, 2)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'four') {
+        if (game.checkAvailability(1, 0) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(1, 0)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'five') {
+        if (game.checkAvailability(1, 1) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(1, 1)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'six') {
+        if (game.checkAvailability(1, 2) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(1, 2)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'seven') {
+        if (game.checkAvailability(2, 0) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(2, 0)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'eight') {
+        if (game.checkAvailability(2, 1) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(2, 1)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
     if (event.target.classList[1] === 'nine') {
+        if (game.checkAvailability(2, 2) === 'occupied') {
+            return;
+        }
         if (game.alterGameBoard(2, 2)) {
             addTextContent(event.target, findCurrentPlayer());
             return;
         }
-        addTextContent(event.target, findCurrentPlayer());
-        game.incrementTurn();
-        game.displayTurn();
+        initiateClickSequence(event.target, findCurrentPlayer());
         return;
     }
 }
@@ -358,6 +377,7 @@ function getRestartGameButton() {
         game.displayTurn();
 
         const gameGrid = document.querySelector('.game-grid');
+        gameGrid.removeEventListener('click', getGameInput);
         gameGrid.addEventListener('click', getGameInput);
 
     })
@@ -381,6 +401,10 @@ function openModal() {
         </form>`;
     dialog.showModal();
 
+    // PlACE FOCUS ON THE FIRST PLAYER INPUT FIELD
+    const firstPlayerInput = document.querySelector('.first-player');
+    firstPlayerInput.focus();
+    
     // COLLECT PLAYER'S NAME AND INITIALISE GAME
     const beginButton = document.querySelector('.begin');
     beginButton.addEventListener('click', start);
