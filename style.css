@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    line-height: 1.5;
+    line-height: 1.3;
     font-family: 'Times New Roman', Times, serif;
 }
 
@@ -18,7 +18,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 6.25vw;
+    padding: 1.5rem 6.25vw;
     border-bottom: 1px solid transparent;
     gap: 1rem;
     margin-bottom: 1rem;
@@ -35,7 +35,8 @@ h1 {
 button {
     display: flex;
     align-items: center;
-    font-size: 1.005rem;
+    justify-content: center;
+    font-size: 1.05rem;
     font-weight: 600;
     padding: 1rem 2rem;
     border-radius: 999px;
@@ -49,15 +50,16 @@ main {
 }
 .game-grid {
     display: grid;
-    width: 25vw;
-    height: 25vw;
+    width: 35vw;
+    height: 35vw;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     margin: 0 auto;
-    gap: 2px;
+    gap: 3px;
     background: white;
     margin-top: 5rem;
     border: none;
+    container: grid-container / inline-size;
 }
 .grid-item {
     display: flex;
@@ -76,7 +78,7 @@ dialog {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50vw;
-    padding: 1.5rem;
+    padding: 2rem;
     margin: auto;
     border-radius: 1rem;
     background-color: rgba(60, 74, 48, 0.75);
@@ -125,7 +127,7 @@ input {
 }
 
 dialog button {
-    margin: 1rem auto 0;
+    margin: 2rem auto 0;
 }
 
 button.yes {
@@ -137,9 +139,10 @@ button.no {
 }
 
 .turn {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: navy;
     text-transform: uppercase;
     font-family: monospace, serif, sans-serif, monospace, 'Times New Roman', Times;
@@ -163,4 +166,42 @@ button.yes, button.no {
 }
 .win {
     text-transform: uppercase;
+}
+
+@container grid-container (width < 1000px) {
+    .grid-item {
+        font-size: 17cqi;
+    }
+}
+@media (width < 1000px) {
+    .game-grid {
+        width: 50vw;
+        height: 50vw;
+    }
+    dialog {
+        width: 75vw;
+    }
+}
+@media (width < 500px) {
+    .game-grid {
+        width: 75vw;
+        height: 75vw;
+    }
+    header {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+    }
+    dialog {
+        width: 90vw;
+    }
+    input {
+        width: 80%;
+    }
+    dialog h2 {
+        line-height: 1;
+    }
+    header button {
+        min-width: 100%;
+    }
 }
