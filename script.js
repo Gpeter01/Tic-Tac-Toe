@@ -1,120 +1,479 @@
 'use strict'
+function Players(firstPlayer, secondPlayer) {
+    this.firstPlayer = firstPlayer;
+    this.secondPlayer = secondPlayer;
+}
+
 const game = (() => {
     // PRIVATE VARIABLES
+    let players;
     let drawCount = 0;
     let winCount = 0;
     let gameTurn = 1;
     const gameValues = ['X', 'O'];
-    let gameBoard = [[1, 1, 2], 
-                     [2, 2, 1], 
-                     [1, 2, 1]];
+    let gameBoard;
 
     // GAME FUNCTIONS
     const getGameValues = () => {return gameValues};
     const getGameBoard = () => {return gameBoard};
     const getThisTurn = () => {return gameTurn};
     const incrementTurn = () => {gameTurn++};
+    
+    // DISPLAY PLAYER'S TURN
+    const displayTurn = () => {
+        const displayParagraph = document.querySelector('.turn');
+        if (gameTurn === 1) {
+            displayParagraph.textContent = `${players.firstPlayer} is to play`
+            return;
+        }
+        if (gameTurn % 2 === 0) {
+            displayParagraph.textContent = `It's ${players.secondPlayer}'s turn`
+            return;
+        }
+        displayParagraph.textContent = `It's ${players.firstPlayer}'s turn`
+        return;
+    }
+
+    // SET PLAYERS IN THE GAME
+    const setPlayer = (object) => {
+        players = object;
+    }
 
     // CHECK FOR A DRAW
     const checkDraw = () => {
-        for (let i = 0; i < gameBoard.length; i++) {
-            for (let j = 0; j < gameBoard[i].length; j++) {
-                if (typeof gameBoard[i][j] !== 'string') {
-                    return;
-                }
-            }
+        if (gameTurn === 9) {
+            drawGame();
+            drawCount++;
+            return true;
         }
-        console.log(`It's a draw`);
-        drawCount++;
-        return;
     }
 
     // CHECK FOR A WIN
     const checkWin = () => {
         if ((gameBoard[0][0] === gameBoard[0][1]) && 
             (gameBoard[0][1] === gameBoard[0][2])) {
-                console.log(`${gameBoard[0][0]} wins !!`);
+               if (gameBoard[0][0] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[1][0] === gameBoard[1][1]) && 
             (gameBoard[1][1] === gameBoard[1][2])) {
-                console.log(`${gameBoard[1][0]} wins !!`);
+                if (gameBoard[1][0] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[2][0] === gameBoard[2][1]) && 
             (gameBoard[2][1] === gameBoard[2][2])) {
-                console.log(`${gameBoard[2][0]} wins !!`);
+                if (gameBoard[2][0] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[0][0] === gameBoard[1][0]) && 
             (gameBoard[1][0] === gameBoard[2][0])) {
-                console.log(`${gameBoard[0][0]} wins !!`);
+                if (gameBoard[0][0] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[0][1] === gameBoard[1][1]) && 
             (gameBoard[1][1] === gameBoard[2][1])) {
-                console.log(`${gameBoard[0][1]} wins !!`);
+                if (gameBoard[0][1] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[0][2] === gameBoard[1][2]) && 
             (gameBoard[1][2] === gameBoard[2][2])) {
-                console.log(`${gameBoard[0][2]} wins !!`);
+                if (gameBoard[0][2] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[0][0] === gameBoard[1][1]) && 
             (gameBoard[1][1] === gameBoard[2][2])) {
-                console.log(`${gameBoard[0][2]} wins !!`);
+                if (gameBoard[0][0] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
         if ((gameBoard[0][2] === gameBoard[1][1]) && 
             (gameBoard[1][1] === gameBoard[2][0])) {
-                console.log(`${gameBoard[0][2]} wins !!`);
+                if (gameBoard[0][2] === gameValues[0]) {
+                    winGame(players.firstPlayer);
+                    winCount++
+                    return true;
+                }
+                winGame(players.secondPlayer);
                 winCount++;
+                return true;
             }
     }
+
     const alterGameBoard = (row, column) => {
         if (winCount !== 0) {
-            return;
+            return true;
         }
         if (drawCount !== 0) {
-            return;
+            return true;
         }
         if (typeof gameBoard[row][column] === 'string') {
-            return;
+            return true;
         }
         if (gameTurn % 2 == 0) {
             gameBoard[row][column] = gameValues[1];
-            incrementTurn();
+            if (checkWin()) {
+                return true;
+            }
+            if (checkDraw()) {
+                return true;
+            }
             return;
         }
         gameBoard[row][column] = gameValues[0];
-        console.log(gameTurn);
-        incrementTurn();
-        checkWin();
-        checkDraw();
+
+        if (checkWin()) {
+            return true;
+        }
+        if (checkDraw()) {
+            return true;
+        }
         return;
     }
     const newGame = () => {
         winCount = 0;
         drawCount = 0;
         gameTurn = 1;
-        gameBoard = [[1, 1, 1], 
-                     [1, 1, 1], 
-                     [1, 1, 1]];
+        gameBoard = [[1, 1, 2], 
+                     [2, 2, 1], 
+                     [1, 2, 1]];
         return;
     }
-    return {getGameBoard, alterGameBoard, getGameValues, getThisTurn, incrementTurn, newGame};
+    return {getGameBoard, alterGameBoard, getGameValues, getThisTurn, incrementTurn, newGame, setPlayer, displayTurn};
 })();
 
-const gameControls = (() => {
-    const renderGameBoard = () => {
-        console.log(game.getGameBoard());
-    }
-    return {renderGameBoard};
-})();
-
-// LET'S PLAY A LITTLE GAME HERE AND SEE HOW IT GOES
-function playGame(row, column) {
-    game.alterGameBoard(row, column);   
-    gameControls.renderGameBoard();
+function checkAccurately(element) {
+    if (element === undefined || element === null || element === '') {
+        const error = document.querySelector('.error');
+        error.textContent = 'Fill the form correctly';
+        return true;
+    }  
+    return false;
 }
+
+function checkString(string) {
+    if (typeof string !== 'string') {
+        console.log('ERROR');
+        return false;
+    } 
+    return true;
+}
+
+function addTextContent(element, textContent) {
+    if (checkString(textContent)) {
+        element.textContent = textContent;
+    } 
+}
+
+function append(parent, child) {
+    parent.appendChild(child);
+}
+
+function addClassName(element, className) {
+    if (checkString(className)) {
+        element.classList.add(className);
+    } 
+}
+function getGameInput(event) {
+    if (game.getThisTurn() === 2) {
+        getRestartGameButton();
+    }
+    function findCurrentPlayer() {
+        if (game.getThisTurn() % 2 === 0) {
+            return game.getGameValues()[1];
+        }
+        return game.getGameValues()[0];
+    }
+
+    if (event.target.classList[1] === 'one') {
+        if (game.alterGameBoard(0, 0)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'two') {
+        if (game.alterGameBoard(0, 1)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+
+    }
+    if (event.target.classList[1] === 'three') {
+        if (game.alterGameBoard(0, 2)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'four') {
+        if (game.alterGameBoard(1, 0)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'five') {
+        if (game.alterGameBoard(1, 1)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'six') {
+        if (game.alterGameBoard(1, 2)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'seven') {
+        if (game.alterGameBoard(2, 0)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'eight') {
+        if (game.alterGameBoard(2, 1)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+    if (event.target.classList[1] === 'nine') {
+        if (game.alterGameBoard(2, 2)) {
+            addTextContent(event.target, findCurrentPlayer());
+            return;
+        }
+        addTextContent(event.target, findCurrentPlayer());
+        game.incrementTurn();
+        game.displayTurn();
+        return;
+    }
+}
+
+function start() {
+    const firstPlayer = document.querySelector('.first-player');
+    const secondPlayer = document.querySelector('.second-player');
+
+    if (checkAccurately(firstPlayer.value)) {
+        return;
+    }
+    if (checkAccurately(secondPlayer.value)) {
+        return;
+    }
+
+    // GET A GAME 
+    game.newGame();
+
+    // SET PLAYERS
+    game.setPlayer(new Players(firstPlayer.value, secondPlayer.value));
+
+    game.displayTurn();
+    
+    // CLOSE MODAL
+    const dialog = document.querySelector('dialog');
+    dialog.close();
+
+    // RECEIVE GRID INPUT
+    const gameGrid = document.querySelector('.game-grid');
+    gameGrid.addEventListener('click', getGameInput);
+}
+function getRestartGameButton() {
+    const start = document.querySelector('header button');
+    start.removeEventListener('click', openModal);
+    addClassName(start, 'new-start');
+    start.classList.remove('start');
+    addTextContent(start, 'Restart Game');
+
+    start.addEventListener('click', () => {
+        deleteGameContent();
+        game.newGame();
+        game.displayTurn();
+
+        const gameGrid = document.querySelector('.game-grid');
+        gameGrid.addEventListener('click', getGameInput);
+
+    })
+}
+function openModal() {
+    const dialog = document.querySelector('dialog');
+    dialog.innerHTML = ` 
+        <form action="">
+            <h2>Input the following to get started</h2>
+            <p class="note"><span class="bold">Note</span>: X always starts first</p>
+
+            <label for="first-player">First player:
+                <input type="text" class="first-player" name='first-player' placeholder="Peter" required>
+            </label>
+
+            <label for="second-player">Second player:
+                <input type="text" class="second-player" name='second-player' placeholder="Orsted" required>
+            </label>
+            <p class="error"></p>
+            <button type="button" class="begin">Start game</button>
+        </form>`;
+    dialog.showModal();
+
+    // COLLECT PLAYER'S NAME AND INITIALISE GAME
+    const beginButton = document.querySelector('.begin');
+    beginButton.addEventListener('click', start);
+}
+function deleteGameContent() {
+    const gridItems = document.querySelectorAll('.grid-item');
+    for (let i = 0; i < gridItems.length; i++) {
+        gridItems[i].textContent = '';
+    }
+    return;
+}
+
+function drawGame() {
+    const dialog = document.querySelector('dialog');
+    dialog.innerHTML = `
+        <p class="win">It is a draw</p>
+        <p class="question">New Game?</p>
+        <div class="button-container">
+            <button class="yes">YES</button>
+            <button class="no">NO</button>
+        </div>`;
+    
+     // SHOW MODAL
+    dialog.showModal();
+
+    // DELETE PLAYER TURN DISPLAY
+    const turn = document.querySelector('.turn');
+    addTextContent(turn, '');
+
+    const yesButton = document.querySelector('.yes');
+    yesButton.addEventListener('click', (event) => {
+        deleteGameContent();
+        game.newGame();
+        dialog.close();
+        game.displayTurn();
+
+        // RECEIVE GRID INPUT
+        const gameGrid = document.querySelector('.game-grid');
+        gameGrid.addEventListener('click', getGameInput);
+    })
+
+    const noButton = document.querySelector('.no');
+    noButton.addEventListener('click', () => {
+        const gameGrid = document.querySelector('.game-grid');
+        gameGrid.removeEventListener('click', getGameInput);
+
+        // CLOSE MODAL
+        deleteGameContent();
+        dialog.close();
+    });
+}
+function winGame(player) {
+    const dialog = document.querySelector('dialog');
+    dialog.innerHTML = `
+        <p class="win"></p>
+        <p class="question">New Game?</p>
+        <div class="button-container">
+            <button class="yes">YES</button>
+            <button class="no">NO</button>
+        </div>`;
+
+    const gameWinner = document.querySelector('.win');
+    addTextContent(gameWinner, `${player} wins!!`)
+    
+    // SHOW MODAL
+    dialog.showModal();
+
+    // DELETE PLAYER TURN DISPLAY
+    const turn = document.querySelector('.turn');
+    addTextContent(turn, '');
+
+    const yesButton = document.querySelector('.yes');
+    yesButton.addEventListener('click', (event) => {
+        deleteGameContent();
+        game.newGame();
+        dialog.close();
+        game.displayTurn();
+
+        // RECEIVE GRID INPUT
+        const gameGrid = document.querySelector('.game-grid');
+        gameGrid.addEventListener('click', getGameInput);
+    })
+
+    const noButton = document.querySelector('.no');
+    noButton.addEventListener('click', () => {
+        const gameGrid = document.querySelector('.game-grid');
+        gameGrid.removeEventListener('click', getGameInput);
+
+        // CLOSE MODAL
+        deleteGameContent();
+        dialog.close();
+    })
+}
+// OPEN MODAL   
+const startButton = document.querySelector('.start');
+startButton.addEventListener('click', openModal);
